@@ -1,11 +1,12 @@
-import { useRef, useState, useCallback, useEffect } from "react";
-import Error from "./components/Error.jsx";
-import Places from "./components/Places.jsx";
-import Modal from "./components/Modal.jsx";
-import DeleteConfirmation from "./components/DeleteConfirmation.jsx";
-import logoImg from "./assets/logo.png";
-import AvailablePlaces from "./components/AvailablePlaces.jsx";
-import { fetchUserPlaces, updateUserPlaces } from "./http.js";
+import { useRef, useState, useCallback, useEffect } from 'react';
+
+import Places from './components/Places.jsx';
+import Modal from './components/Modal.jsx';
+import DeleteConfirmation from './components/DeleteConfirmation.jsx';
+import logoImg from './assets/logo.png';
+import AvailablePlaces from './components/AvailablePlaces.jsx';
+import { fetchUserPlaces, updateUserPlaces } from './http.js';
+import Error from './components/Error.jsx';
 
 function App() {
   const selectedPlace = useRef();
@@ -13,6 +14,7 @@ function App() {
   const [userPlaces, setUserPlaces] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState();
+
   const [errorUpdatingPlaces, setErrorUpdatingPlaces] = useState();
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -24,10 +26,12 @@ function App() {
         const places = await fetchUserPlaces();
         setUserPlaces(places);
       } catch (error) {
-        setError({ message: error.message || "에러" });
+        setError({ message: error.message || 'Failed to fetch user places.' });
       }
+
       setIsFetching(false);
     }
+
     fetchPlaces();
   }, []);
 
@@ -57,7 +61,9 @@ function App() {
       await updateUserPlaces([selectedPlace, ...userPlaces]);
     } catch (error) {
       setUserPlaces(userPlaces);
-      setErrorUpdatingPlaces({ message: error.message || "업데이트 실패" });
+      setErrorUpdatingPlaces({
+        message: error.message || 'Failed to update places.',
+      });
     }
   }
 
@@ -68,13 +74,16 @@ function App() {
           (place) => place.id !== selectedPlace.current.id
         )
       );
+
       try {
         await updateUserPlaces(
-          userPlaces.filter((place) => place.id !== selectedPlace.id)
+          userPlaces.filter((place) => place.id !== selectedPlace.current.id)
         );
       } catch (error) {
         setUserPlaces(userPlaces);
-        setErrorUpdatingPlaces({ message: error.message || "에러" });
+        setErrorUpdatingPlaces({
+          message: error.message || 'Failed to delete place.',
+        });
       }
 
       setModalIsOpen(false);
@@ -91,12 +100,13 @@ function App() {
       <Modal open={errorUpdatingPlaces} onClose={handleError}>
         {errorUpdatingPlaces && (
           <Error
-            title="에러"
+            title="An error occurred!"
             message={errorUpdatingPlaces.message}
             onConfirm={handleError}
           />
         )}
       </Modal>
+
       <Modal open={modalIsOpen} onClose={handleStopRemovePlace}>
         <DeleteConfirmation
           onCancel={handleStopRemovePlace}
@@ -113,13 +123,13 @@ function App() {
         </p>
       </header>
       <main>
-        {error && <Error title="에러" message={error.message} />}
+        {error && <Error title="An error occurred!" message={error.message} />}
         {!error && (
           <Places
             title="I'd like to visit ..."
             fallbackText="Select the places you would like to visit below."
             isLoading={isFetching}
-            loadingText="장소 불러오는중..."
+            loadingText="Fetching your places..."
             places={userPlaces}
             onSelectPlace={handleStartRemovePlace}
           />

@@ -6,7 +6,7 @@ export default function Error({ title, message, onConfirm }) {
       {onConfirm && (
         <div id="confirmation-actions">
           <button onClick={onConfirm} className="button">
-            확인
+            Okay
           </button>
         </div>
       )}
