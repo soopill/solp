@@ -1,17 +1,8 @@
-<<<<<<< HEAD
-import { useState } from 'react';
-
-import Header from './components/Header.jsx';
-import Shop from './components/Shop.jsx';
-import { DUMMY_PRODUCTS } from './dummy-products.js';
-=======
 import { useState } from "react";
+
 import Header from "./components/Header.jsx";
 import Shop from "./components/Shop.jsx";
 import { DUMMY_PRODUCTS } from "./dummy-products.js";
-import Product from "./components/Product";
-import { CartContext } from "./store/shopping-cart-context.jsx";
->>>>>>> 9b9bd9fbf369219ee2b53d46130c933c739e611a
 
 function App() {
   const [shoppingCart, setShoppingCart] = useState({
@@ -74,35 +65,14 @@ function App() {
     });
   }
 
-<<<<<<< HEAD
   return (
     <>
-=======
-  const ctxValue = {
-    items: shoppingCart.items,
-    addItemToCart: handleAddItemToCart,
-  };
-
-  return (
-    <CartContext.Provider value={ctxValue}>
->>>>>>> 9b9bd9fbf369219ee2b53d46130c933c739e611a
       <Header
         cart={shoppingCart}
         onUpdateCartItemQuantity={handleUpdateCartItemQuantity}
       />
-<<<<<<< HEAD
       <Shop onAddItemToCart={handleAddItemToCart} />
     </>
-=======
-      <Shop>
-        {DUMMY_PRODUCTS.map((product) => (
-          <li key={product.id}>
-            <Product {...product} onAddToCart={handleAddItemToCart} />
-          </li>
-        ))}
-      </Shop>
-    </CartContext.Provider>
->>>>>>> 9b9bd9fbf369219ee2b53d46130c933c739e611a
   );
 }
 
